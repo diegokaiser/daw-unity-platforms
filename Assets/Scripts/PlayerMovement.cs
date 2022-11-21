@@ -51,7 +51,11 @@ public class PlayerMovement : MonoBehaviour
         if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Mouse1)) && Time.time > _lastShoot + 0.25f)
         {
             Shoot();
+            _animator.SetBool("Shooting", true);
             _lastShoot = Time.time;
+        } else
+        {
+            _animator.SetBool("Shooting", false);
         }
     }
 
@@ -66,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Shoot()
-    {
+    {        
         Vector3 _direction;
         if (transform.localScale.x == 1.0f)
         {
@@ -75,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _direction = Vector2.left;
         }
-        GameObject _bullet = Instantiate(_bulletPrefab, transform.position + _direction * 0.1f, Quaternion.identity);
+        GameObject _bullet = Instantiate(_bulletPrefab, transform.position + _direction * .7f, Quaternion.identity);
         _bullet.GetComponent<BulletScript>().SetDirection(_direction);
     }
 }
