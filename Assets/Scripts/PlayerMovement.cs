@@ -7,7 +7,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
     public List<Vector3> _originPoints;
-    public GameObject _bulletPrefab;    
+    public GameObject _bulletPrefab;
+    public GameObject[] _lives;
     private float _horizontal;
     private float _lastShoot;
     public float _jumpForce;
@@ -57,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         } else
         {
             _animator.SetBool("Shooting", false);
-        }
+        }        
     }
 
     private void FixedUpdate()
@@ -87,9 +88,24 @@ public class PlayerMovement : MonoBehaviour
     public void Hit()
     {
         _health = _health - 1;
-        if (_health == 0)
+        if (_health < 1)
         {
+            Destroy(_lives[0].gameObject);
             Destroy(gameObject);
+            GameOver();
         }
+        else if (_health < 2)
+        {
+            Destroy(_lives[1].gameObject);
+        }
+        else if (_health < 3)
+        {
+            Destroy(_lives[2].gameObject);
+        }
+    }
+
+    public void GameOver()
+    {
+
     }
 }
