@@ -120,7 +120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1771ba2e49f324f39b0231fde3fd5775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
+  _audioclip: {fileID: 8300000, guid: fc16825b8969440bcb87e54676c7e851, type: 3}
+  _speed: 1
 --- !u!50 &2732773129624007846
 Rigidbody2D:
   serializedVersion: 4

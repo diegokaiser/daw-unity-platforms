@@ -7,13 +7,14 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
     public List<Vector3> _originPoints;
-    public GameObject _bulletPrefab;
+    public GameObject _bulletPrefab;    
     private float _horizontal;
     private float _lastShoot;
     public float _jumpForce;
     public float _speed;
     public bool _grounded;
     public float _length = 0.575f;
+    public int _health = 3;
 
     void Start()
     {
@@ -50,9 +51,9 @@ public class PlayerMovement : MonoBehaviour
         }
         if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Mouse1)) && Time.time > _lastShoot + 0.25f)
         {
-            Shoot();
-            _animator.SetBool("Shooting", true);
-            _lastShoot = Time.time;
+            //Shoot();
+            //_animator.SetBool("Shooting", true);
+            //_lastShoot = Time.time;
         } else
         {
             _animator.SetBool("Shooting", false);
@@ -81,5 +82,14 @@ public class PlayerMovement : MonoBehaviour
         }
         GameObject _bullet = Instantiate(_bulletPrefab, transform.position + _direction * .7f, Quaternion.identity);
         _bullet.GetComponent<BulletScript>().SetDirection(_direction);
+    }
+
+    public void Hit()
+    {
+        _health = _health - 1;
+        if (_health == 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

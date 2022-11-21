@@ -8,6 +8,11 @@ public class CameraScript : MonoBehaviour
 
     void Update()
     {
+        if (_player == null)
+        {
+            return;
+        }
+
         Vector3 _position = transform.position;
         _position.x = _player.transform.position.x;
         transform.position = _position;
