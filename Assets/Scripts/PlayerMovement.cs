@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public List<Vector3> _originPoints;
     public GameObject _bulletPrefab;
     public GameObject[] _lives;
+    public AudioClip _audioStepA, _audioStepB, _audioHurt, _audioDeath;
     public Transform _gameOverPanel;
     private float _horizontal;
     private float _lastShoot;
@@ -101,16 +102,19 @@ public class PlayerMovement : MonoBehaviour
         if (_health < 1)
         {
             Destroy(_lives[0].gameObject);
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(_audioDeath);
             Destroy(gameObject);
             GameOver();
         }
         else if (_health < 2)
         {
             Destroy(_lives[1].gameObject);
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(_audioHurt);
         }
         else if (_health < 3)
         {
             Destroy(_lives[2].gameObject);
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(_audioHurt);
         }
     }
 
