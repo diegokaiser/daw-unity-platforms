@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public List<Vector3> _originPoints;
     public GameObject _bulletPrefab;
     public GameObject[] _lives;
-    public AudioClip _audioStepA, _audioStepB, _audioHurt, _audioDeath;
+    public AudioClip _audioStepA, _audioStepB, _audioJump, _audioHurt, _audioDeath, _audioShoot, _audioGameOver;
     public Transform _gameOverPanel;
     private float _horizontal;
     private float _lastShoot;
@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public bool _grounded;
     public float _length = 0.575f;
     public int _health = 3;
+    public bool _canShoot = false;
     public bool _gameOver = false;
 
     void Start()
@@ -33,8 +34,11 @@ public class PlayerMovement : MonoBehaviour
         if (_horizontal < 0.0f)
         {
             transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(_audioStepA);
+
         } else if (_horizontal > 0.0f) {
             transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(_audioStepB);
         }
         _animator.SetBool("Running", _horizontal != 0.0f);
         for (int i = 0; i < _originPoints.Count; i++)
@@ -54,15 +58,20 @@ public class PlayerMovement : MonoBehaviour
         {
             Jump();
         }
-        if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Mouse1)) && Time.time > _lastShoot + 0.25f)
+        if (_canShoot)
         {
-            //Shoot();
-            //_animator.SetBool("Shooting", true);
-            //_lastShoot = Time.time;
-        } else
-        {
-            _animator.SetBool("Shooting", false);
+            if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Mouse1)) && Time.time > _lastShoot + 0.25f)
+            {
+                Shoot();
+                _animator.SetBool("Shooting", true);
+                _lastShoot = Time.time;
+            }
+            else
+            {
+                _animator.SetBool("Shooting", false);
+            }
         }
+        
         if (_gameOver)
         {
             if (Input.GetKey(KeyCode.Space))
@@ -80,6 +89,7 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         _rigidbody2D.AddForce(Vector2.up * _jumpForce);
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(_audioJump);
     }
 
     private void Shoot()
@@ -94,6 +104,7 @@ public class PlayerMovement : MonoBehaviour
         }
         GameObject _bullet = Instantiate(_bulletPrefab, transform.position + _direction * .7f, Quaternion.identity);
         _bullet.GetComponent<BulletScript>().SetDirection(_direction);
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(_audioShoot);
     }
 
     public void Hit()
@@ -122,5 +133,6 @@ public class PlayerMovement : MonoBehaviour
     {
         _gameOverPanel.gameObject.SetActive(true);
         _gameOver = true;
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(_audioGameOver);
     }
 }
