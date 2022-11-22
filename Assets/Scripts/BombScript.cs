@@ -6,11 +6,12 @@ public class BombScript : MonoBehaviour
 {
     private Rigidbody2D _rigidbody2D;
     public AudioClip _audioclip;
+    private Animator _animator;
 
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        Camera.main.GetComponent<AudioSource>().PlayOneShot(_audioclip);
+        _animator = GetComponent<Animator>();
     }
 
     public void DestroyBomb()
@@ -18,13 +19,15 @@ public class BombScript : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        PlayerMovement _playerMovement = collision.GetComponent<PlayerMovement>();
+        PlayerMovement _playerMovement = collision.collider.GetComponent<PlayerMovement>();
         if (_playerMovement != null)
         {
             _playerMovement.Hit();
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(_audioclip);
+            _animator.SetBool("Explote", true);
+            DestroyBomb();
         }
-        DestroyBomb();
     }
 }
