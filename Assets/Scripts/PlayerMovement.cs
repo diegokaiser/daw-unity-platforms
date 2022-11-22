@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public List<Vector3> _originPoints;
     public GameObject _bulletPrefab;
     public GameObject[] _lives;
+    public Transform _gameOverPanel;
     private float _horizontal;
     private float _lastShoot;
     public float _jumpForce;
@@ -16,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public bool _grounded;
     public float _length = 0.575f;
     public int _health = 3;
+    public bool _gameOver = false;
 
     void Start()
     {
@@ -58,7 +61,14 @@ public class PlayerMovement : MonoBehaviour
         } else
         {
             _animator.SetBool("Shooting", false);
-        }        
+        }
+        if (_gameOver)
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                SceneManager.LoadScene("Platforms");
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -106,6 +116,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void GameOver()
     {
-
+        _gameOverPanel.gameObject.SetActive(true);
+        _gameOver = true;
     }
 }
