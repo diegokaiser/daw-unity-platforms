@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject _bulletPrefab;
     public GameObject[] _lives;
     public AudioClip _audioStepA, _audioStepB, _audioJump, _audioHurt, _audioDeath, _audioShoot, _audioGameOver;
-    public Transform _gameOverPanel, _gameStartPanel;
+    public Transform _gameOverPanel, _gameStartPanel, _livesPanel;
     private float _horizontal;
     private float _lastShoot;
     public float _jumpForce;
@@ -141,16 +141,23 @@ public class PlayerMovement : MonoBehaviour
     public void GameOver()
     {
         _gameOverPanel.gameObject.SetActive(true);
+        _livesPanel.gameObject.SetActive(false);
         _gameOver = true;
         Camera.main.GetComponent<AudioSource>().PlayOneShot(_audioGameOver);
     }
 
     public void GameStart()
     {
-        if (_gameStart == true)
-        {
-            _gameStartPanel.gameObject.SetActive(false);
-            _gameStart = true;
-        }
+        _gameStartPanel.gameObject.SetActive(false);
+        _livesPanel.gameObject.SetActive(true);
+        _gameStart = true;
+    }
+
+    public void GameStartHard()
+    {
+        _health = _health - 2;
+        _gameStartPanel.gameObject.SetActive(false);
+        _livesPanel.gameObject.SetActive(true);
+        _gameStart = true;
     }
 }
