@@ -72,20 +72,21 @@ public class PlayerMovement : MonoBehaviour
                 _animator.SetBool("Shooting", false);
             }
         }
-        
-        if (_gameOver)
+        if (_gameOver == true)
         {
+            Debug.Log("tipos");
             if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Return))
             {
-                SceneManager.LoadScene("Platforms");
+                GameStart();
+                Debug.Log("tiene que iniciar");
             }
         }
-
         if (_gameStart == false)
         {
             if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Return))
             {
-                _gameStartPanel.gameObject.SetActive(false);
+                GameStart();
+                Debug.Log("juego inicia");
             }
         }
     }
@@ -138,12 +139,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void Ammo()
+    {
+        _canShoot = true;
+    }
+
     public void GameOver()
     {
         _gameOverPanel.gameObject.SetActive(true);
         _livesPanel.gameObject.SetActive(false);
         _gameOver = true;
         Camera.main.GetComponent<AudioSource>().PlayOneShot(_audioGameOver);
+        Debug.Log("Gameover");
     }
 
     public void GameStart()
